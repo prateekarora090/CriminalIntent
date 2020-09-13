@@ -14,7 +14,11 @@ import android.widget.RadioGroup;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.UUID;
+
 public class CrimeFragment extends Fragment {
+
+    private static final String ARG_CRIME_ID = "crime_id"; // <-- added
 
     private Crime mCrime;
 
@@ -22,10 +26,20 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
 
+    public static CrimeFragment newInstance(UUID crimeID) { // <-- added
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, crimeID);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrime = new Crime();
+        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 
     @Override
@@ -35,6 +49,9 @@ public class CrimeFragment extends Fragment {
         mTitleField = (EditText) v.findViewById(R.id.crime_title);
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
+
+        mTitleField.setText(mCrime.getTitle());
+        mSolvedCheckBox.setChecked(mCrime.isSolved());
 
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
