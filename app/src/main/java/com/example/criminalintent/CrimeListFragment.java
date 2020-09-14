@@ -34,7 +34,7 @@ public class CrimeListFragment extends Fragment {
     }
 
     @Override
-    public void onResume() { //<-- added!
+    public void onResume() {
         super.onResume();
         updateUI();
     }
@@ -43,11 +43,11 @@ public class CrimeListFragment extends Fragment {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 
-        if (mAdapter == null) { //<-- added
+        if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.notifyDataSetChanged(); //<--added
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -105,7 +105,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
     }
